@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { PlanetData } from '../types/planet'
-import { useSimulation } from '../lib/SimulationContext'
+import { getPlanetPosition } from '../lib/planetPositions'
 import {
   CAMERA_INITIAL_POSITION,
   CAMERA_MIN_DISTANCE,
@@ -24,8 +24,6 @@ export function CameraController({ selectedPlanet }: CameraControllerProps) {
   const currentLookAt = useRef(new THREE.Vector3(0, 0, 0))
   const mouseRef = useRef({ x: 0, y: 0 })
   const zoomRef = useRef(1)
-  const planetAngleRef = useRef(0)
-  const { paused, speed } = useSimulation()
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -52,20 +50,23 @@ export function CameraController({ selectedPlanet }: CameraControllerProps) {
     }
   }, [gl])
 
-  useFrame((_, delta) => {
+  useFrame(() => {
     if (selectedPlanet) {
-      if (!paused) {
-        planetAngleRef.current += selectedPlanet.orbitSpeed * delta * speed
+      // Sun is at origin, planets use shared position store
+      if (selectedPlanet.id === 'sun') {
+        targetLookAt.current.set(0, 0, 0)
+        targetPosition.current.set(10, 8, 10)
+      } else {
+        const pos = getPlanetPosition(selectedPlanet.id)
+        if (pos) {
+          targetLookAt.current.set(pos.x, 0, pos.z)
+          targetPosition.current.set(
+            pos.x + 5 + selectedPlanet.size * 2,
+            3 + selectedPlanet.size * 2,
+            pos.z + 5 + selectedPlanet.size * 2,
+          )
+        }
       }
-      const px = Math.cos(planetAngleRef.current) * selectedPlanet.orbitRadius
-      const pz = Math.sin(planetAngleRef.current) * selectedPlanet.orbitRadius
-
-      targetLookAt.current.set(px, 0, pz)
-      targetPosition.current.set(
-        px + 8,
-        5 + selectedPlanet.size * 2,
-        pz + 8,
-      )
     } else {
       const basePos = CAMERA_INITIAL_POSITION
       targetPosition.current.set(

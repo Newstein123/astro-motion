@@ -1,5 +1,24 @@
 import type { PlanetData } from '../types/planet'
 
+export const sunData: PlanetData = {
+  id: 'sun',
+  name: 'Sun',
+  description: 'The star at the center of our solar system. A massive ball of hydrogen and helium undergoing nuclear fusion, producing the light and heat that sustains all life on Earth.',
+  type: 'G-Type Main Sequence Star',
+  distanceFromSun: '0 km (center)',
+  diameter: '1,391,000 km',
+  orbitalPeriod: '225-250 million years (galactic orbit)',
+  gravity: '274 m/s²',
+  moons: 0,
+  temperature: '5,500°C (surface) / 15 million°C (core)',
+  funFact: 'The Sun accounts for 99.86% of all mass in the solar system. Light from its surface takes 8 minutes and 20 seconds to reach Earth.',
+  orbitRadius: 0,
+  size: 3.5,
+  orbitSpeed: 0,
+  rotationSpeed: 0.1,
+  color: '#FDB813',
+}
+
 export const planets: PlanetData[] = [
   {
     id: 'mercury',

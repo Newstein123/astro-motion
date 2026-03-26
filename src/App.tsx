@@ -9,7 +9,7 @@ import { PlanetNav } from './ui/PlanetNav'
 import { LoadingScreen } from './ui/LoadingScreen'
 import { AstronomyFacts } from './ui/AstronomyFacts'
 import { SimulationProvider } from './lib/SimulationContext'
-import { planets } from './data/planets'
+import { sunData, planets } from './data/planets'
 import type { PlanetData } from './types/planet'
 import { CAMERA_INITIAL_POSITION, CAMERA_FOV } from './lib/constants'
 
@@ -34,17 +34,18 @@ function App() {
       }
 
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        const allBodies = [sunData, ...planets]
         setSelectedPlanet((current) => {
-          const currentIndex = current ? planets.findIndex((p) => p.id === current.id) : -1
+          const currentIndex = current ? allBodies.findIndex((p) => p.id === current.id) : -1
           let nextIndex: number
 
           if (e.key === 'ArrowRight') {
-            nextIndex = currentIndex < planets.length - 1 ? currentIndex + 1 : 0
+            nextIndex = currentIndex < allBodies.length - 1 ? currentIndex + 1 : 0
           } else {
-            nextIndex = currentIndex > 0 ? currentIndex - 1 : planets.length - 1
+            nextIndex = currentIndex > 0 ? currentIndex - 1 : allBodies.length - 1
           }
 
-          return planets[nextIndex]
+          return allBodies[nextIndex]
         })
       }
     }

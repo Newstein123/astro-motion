@@ -13,7 +13,7 @@ interface SolarSystemProps {
 export function SolarSystem({ onSelectPlanet }: SolarSystemProps) {
   return (
     <group>
-      <Sun />
+      <Sun onSelect={onSelectPlanet} />
       {planets.map((planet) => (
         <group key={planet.id}>
           <OrbitRing radius={planet.orbitRadius} />

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { planets } from '../data/planets'
+import { sunData, planets } from '../data/planets'
 import type { PlanetData } from '../types/planet'
 
 interface PlanetNavProps {
@@ -20,7 +20,7 @@ export function PlanetNav({ selectedPlanet, onSelect }: PlanetNavProps) {
         border: '1px solid rgba(255,255,255,0.06)',
       }}
     >
-      {planets.map((planet) => {
+      {[sunData, ...planets].map((planet) => {
         const isSelected = selectedPlanet?.id === planet.id
         return (
           <button

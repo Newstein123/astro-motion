@@ -6,6 +6,7 @@ import type { PlanetData } from '../types/planet'
 import { getPlanetTexture, getSaturnRingTexture } from './textures'
 import { Moon } from './Moon'
 import { useSimulation } from '../lib/SimulationContext'
+import { setPlanetPosition } from '../lib/planetPositions'
 
 interface PlanetProps {
   data: PlanetData
@@ -26,10 +27,13 @@ export function Planet({ data, onSelect }: PlanetProps) {
     if (!paused) {
       angleRef.current += data.orbitSpeed * delta * speed
     }
+    const px = Math.cos(angleRef.current) * data.orbitRadius
+    const pz = Math.sin(angleRef.current) * data.orbitRadius
     if (orbitRef.current) {
-      orbitRef.current.position.x = Math.cos(angleRef.current) * data.orbitRadius
-      orbitRef.current.position.z = Math.sin(angleRef.current) * data.orbitRadius
+      orbitRef.current.position.x = px
+      orbitRef.current.position.z = pz
     }
+    setPlanetPosition(data.id, px, pz)
     if (meshRef.current && !paused) {
       meshRef.current.rotation.y += data.rotationSpeed * delta * speed
     }
